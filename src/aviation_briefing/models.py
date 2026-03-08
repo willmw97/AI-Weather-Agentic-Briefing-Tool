@@ -2,13 +2,38 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+
+@dataclass
+class TAFPeriod:
+    """A forecast period segment from a TAF report."""
+
+    start_utc: datetime
+    end_utc: datetime
+    wind: str | None = None
+    visibility: str | None = None
+    weather: str | None = None
+    clouds: str | None = None
+    probability: int | None = None
 
 
-class TafRecord(BaseModel):
-    """Normalized TAF representation."""
+@dataclass
+class TAFReport:
+    """Structured TAF report with parsed validity windows and periods."""
+
+    station: str
+    issue_time: datetime
+    valid_from: datetime
+    valid_to: datetime
+    periods: list[TAFPeriod] = field(default_factory=list)
+    raw_text: str = ""
+
+
+@dataclass
+class TafRecord:
+    """Backward-compatible normalized TAF representation."""
 
     station: str
     issued_at: datetime
@@ -17,9 +42,10 @@ class TafRecord(BaseModel):
     raw_text: str
 
 
-class Briefing(BaseModel):
+@dataclass
+class Briefing:
     """Generated briefing output."""
 
     station: str
     summary: str
-    hazards: list[str] = Field(default_factory=list)
+    hazards: list[str] = field(default_factory=list)

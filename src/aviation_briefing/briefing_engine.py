@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from .models import Briefing, TafRecord
+from .models import Briefing, TAFReport, TafRecord
 
 
-def build_briefing(record: TafRecord) -> Briefing:
+def build_briefing(record: TafRecord | TAFReport) -> Briefing:
     """Generate a basic weather briefing summary from a parsed TAF record."""
 
     text = record.raw_text.upper()
