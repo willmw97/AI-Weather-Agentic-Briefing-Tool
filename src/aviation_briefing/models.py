@@ -49,3 +49,23 @@ class Briefing:
     station: str
     summary: str
     hazards: list[str] = field(default_factory=list)
+
+
+@dataclass
+class HazardBucket:
+    """Hazards identified for a specific period window."""
+
+    start_utc: datetime
+    end_utc: datetime
+    hazards: list[str] = field(default_factory=list)
+
+
+@dataclass
+class BriefingOutput:
+    """Structured decision-support briefing output."""
+
+    station: str
+    executive_summary: str
+    time_bucketed_hazards: list[HazardBucket] = field(default_factory=list)
+    confidence_statement: str = ""
+    operational_recommendations: str = ""
